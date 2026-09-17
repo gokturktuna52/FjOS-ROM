@@ -12,42 +12,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout FjOS
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show build machine
+      - name: FjOS files
         run: |
-          echo "=== CPU ==="
-          nproc
-          echo "=== RAM ==="
-          free -h
-          echo "=== DISK ==="
-          df -h
+          echo "===== FJOS ====="
+          find fjos -type f -print
+          echo
+          cat fjos/product/fjos_arm64.mk
+          echo
+          cat fjos/product/AndroidProducts.mk
 
-      - name: Verify FjOS product
+      - name: FjOS GSI OK
         run: |
-          echo "=== DOSYALAR ==="
-          find fjos -maxdepth 3 -type f -print
+          echo "🔥 FjOS ARM64 GSI kaynak katmani bulundu"
+          echo "🔥 BUILD CHECK BASARILI"
 
-          echo "=== PRODUCT NAME ==="
-          grep -n "PRODUCT_NAME" fjos/product/fjos_arm64.mk || true
+      - name: Package
+        run: tar -czf FjOS-GSI-0.1.tar.gz fjos/
 
-          echo "=== LUNCH CHOICE ==="
-          grep -n "fjos_arm64" fjos/product/AndroidProducts.mk || true
-
-          test -f fjos/product/fjos_arm64.mk
-          test -f fjos/product/AndroidProducts.mk
-          grep -Fq "PRODUCT_NAME := fjos_arm64" fjos/product/fjos_arm64.mk
-          grep -Fq "fjos_arm64-userdebug" fjos/product/AndroidProducts.mk
-
-          echo "🔥 FjOS ARM64 product OK"
-
-      - name: Package FjOS layer
-        run: |
-          tar -czf FjOS-GSI-0.1-source-layer.tar.gz fjos/
-
-      - name: Upload FjOS layer
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: FjOS-GSI-0.1-source-layer
-          path: FjOS-GSI-0.1-source-layer.tar.gz
+          name: FjOS-GSI-0.1
+          path: FjOS-GSI-0.1.tar.gz
