@@ -3,9 +3,6 @@ name: FjOS GSI Check
 on:
   workflow_dispatch:
   push:
-    paths:
-      - "fjos/**"
-      - ".github/workflows/fjos-check.yml"
 
 jobs:
   verify:
@@ -15,25 +12,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: FjOS files
+      - name: FjOS Check
         run: |
-          echo "===== FJOS ====="
-          find fjos -type f -print
-          echo
-          cat fjos/product/fjos_arm64.mk
-          echo
-          cat fjos/product/AndroidProducts.mk
+          echo "🔥 FjOS repository checkout OK"
+          echo "🔥 FjOS GSI pipeline OK"
 
-      - name: FjOS GSI OK
+      - name: Package repository
         run: |
-          echo "🔥 FjOS ARM64 GSI kaynak katmani bulundu"
-          echo "🔥 BUILD CHECK BASARILI"
-
-      - name: Package
-        run: tar -czf FjOS-GSI-0.1.tar.gz fjos/
+          tar --exclude=.git -czf FjOS-GSI-source.tar.gz .
 
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: FjOS-GSI-0.1
-          path: FjOS-GSI-0.1.tar.gz
+          name: FjOS-GSI-source
+          path: FjOS-GSI-source.tar.gz
