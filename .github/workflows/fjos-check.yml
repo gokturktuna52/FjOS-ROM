@@ -14,15 +14,5 @@ jobs:
 
       - name: FjOS Check
         run: |
-          echo "🔥 FjOS repository checkout OK"
-          echo "🔥 FjOS GSI pipeline OK"
-
-      - name: Package repository
-        run: |
-          tar --exclude=.git -czf FjOS-GSI-source.tar.gz .
-
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: FjOS-GSI-source
-          path: FjOS-GSI-source.tar.gz
+          echo "FjOS repository OK"
+          echo "FjOS GSI workflow OK"
