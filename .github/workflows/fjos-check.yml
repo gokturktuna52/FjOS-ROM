@@ -1,0 +1,43 @@
+name: FjOS GSI Check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "fjos/**"
+      - ".github/workflows/fjos-check.yml"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout FjOS
+        uses: actions/checkout@v4
+
+      - name: Show build machine
+        run: |
+          echo "=== CPU ==="
+          nproc
+          echo "=== RAM ==="
+          free -h
+          echo "=== DISK ==="
+          df -h
+
+      - name: Verify FjOS product
+        run: |
+          test -f fjos/product/fjos_arm64.mk
+          test -f fjos/product/AndroidProducts.mk
+          grep -q "PRODUCT_NAME := fjos_arm64" fjos/product/fjos_arm64.mk
+          grep -q "fjos_arm64-userdebug" fjos/product/AndroidProducts.mk
+          echo "FjOS ARM64 product OK"
+
+      - name: Package FjOS layer
+        run: |
+          tar -czf FjOS-GSI-0.1-source-layer.tar.gz fjos/
+
+      - name: Upload FjOS layer
+        uses: actions/upload-artifact@v4
+        with:
+          name: FjOS-GSI-0.1-source-layer
+          path: FjOS-GSI-0.1-source-layer.tar.gz
