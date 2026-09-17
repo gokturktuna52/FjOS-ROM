@@ -1,0 +1,9 @@
+FjOS ROM Project
+
+Target device: HONOR Pad X9
+Model: ELN-W09
+SoC: Snapdragon 685
+Display: 2000x1200
+Base Android: Android 13
+Original UI: MagicOS 7.1
+Kernel family: 4.19
