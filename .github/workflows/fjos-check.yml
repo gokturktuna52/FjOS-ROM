@@ -26,11 +26,21 @@ jobs:
 
       - name: Verify FjOS product
         run: |
+          echo "=== DOSYALAR ==="
+          find fjos -maxdepth 3 -type f -print
+
+          echo "=== PRODUCT NAME ==="
+          grep -n "PRODUCT_NAME" fjos/product/fjos_arm64.mk || true
+
+          echo "=== LUNCH CHOICE ==="
+          grep -n "fjos_arm64" fjos/product/AndroidProducts.mk || true
+
           test -f fjos/product/fjos_arm64.mk
           test -f fjos/product/AndroidProducts.mk
-          grep -q "PRODUCT_NAME := fjos_arm64" fjos/product/fjos_arm64.mk
-          grep -q "fjos_arm64-userdebug" fjos/product/AndroidProducts.mk
-          echo "FjOS ARM64 product OK"
+          grep -Fq "PRODUCT_NAME := fjos_arm64" fjos/product/fjos_arm64.mk
+          grep -Fq "fjos_arm64-userdebug" fjos/product/AndroidProducts.mk
+
+          echo "🔥 FjOS ARM64 product OK"
 
       - name: Package FjOS layer
         run: |
